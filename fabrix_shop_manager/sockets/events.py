@@ -8,7 +8,7 @@ from ..services.dashboard_service import get_dashboard_stats
 
 def register_socket_handlers():
     @socketio.on("connect")
-    def handle_connect():
+    def handle_connect(auth=None):
         emit(
             "socket:connected",
             {

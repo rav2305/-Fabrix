@@ -3,11 +3,11 @@ from urllib.parse import quote_plus
 # Centralized in-code settings.
 # Edit these values directly when moving the project to a different machine/server.
 SECRET_KEY = "replace-with-a-secure-random-secret"
-DB_USERNAME = "root"
+DB_USERNAME = "avnadmin"
 DB_PASSWORD = ""
-DB_HOST = "localhost"
-DB_PORT = 3306
-DB_NAME = "fabrix_shop_manager"
+DB_HOST = "mysql-17a21227-ashirav23-5f09.j.aivencloud.com"
+DB_PORT = 24942
+DB_NAME = "defaultdb"
 DB_POOL_RECYCLE = 1800
 DB_POOL_SIZE = 10
 DB_MAX_OVERFLOW = 20
@@ -23,7 +23,15 @@ INVENTORY_LOW_STOCK_THRESHOLD = 10
 PUBLIC_BASE_URL = "https://fabrix-x4ty.onrender.com"
 
 def _build_database_uri() -> str:
-    return "sqlite:///fabrix.db"
+    credential_part = DB_USERNAME
+
+    if DB_PASSWORD:
+        credential_part = f"{DB_USERNAME}:{quote_plus(DB_PASSWORD)}"
+
+    return (
+        f"mysql+pymysql://{credential_part}"
+        f"@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
+    )
 
 
 class Config:
