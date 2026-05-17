@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="header-section">
+        <h2>Page not found</h2>
+        <p>The page you requested does not exist.</p>
+    </div>
+    <a href="{{ url_for('web.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+</div>
+{% endblock %}

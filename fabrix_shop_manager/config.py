@@ -1,0 +1,59 @@
+from urllib.parse import quote_plus
+
+# Centralized in-code settings.
+# Edit these values directly when moving the project to a different machine/server.
+SECRET_KEY = "replace-with-a-secure-random-secret"
+DB_USERNAME = "root"
+DB_PASSWORD = ""
+DB_HOST = "localhost"
+DB_PORT = 3306
+DB_NAME = "fabrix_shop_manager"
+DB_POOL_RECYCLE = 1800
+DB_POOL_SIZE = 10
+DB_MAX_OVERFLOW = 20
+DB_POOL_TIMEOUT = 30
+DB_TRANSACTION_RETRIES = 3
+SOCKETIO_CORS_ALLOWED_ORIGINS = "*"
+SOCKETIO_PING_TIMEOUT = 20
+SOCKETIO_PING_INTERVAL = 25
+APP_HOST = "0.0.0.0"
+APP_PORT = 5000
+DEBUG = False
+INVENTORY_LOW_STOCK_THRESHOLD = 10
+PUBLIC_BASE_URL = "http://127.0.0.1:5000"
+
+
+def _build_database_uri() -> str:
+    credential_part = DB_USERNAME
+    if DB_PASSWORD:
+        credential_part = f"{DB_USERNAME}:{quote_plus(DB_PASSWORD)}"
+    return (
+        f"mysql+pymysql://{credential_part}"
+        f"@{DB_HOST}:{DB_PORT}/{DB_NAME}?charset=utf8mb4"
+    )
+
+
+class Config:
+    SECRET_KEY = SECRET_KEY
+    SQLALCHEMY_DATABASE_URI = _build_database_uri()
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": DB_POOL_RECYCLE,
+        "pool_size": DB_POOL_SIZE,
+        "max_overflow": DB_MAX_OVERFLOW,
+        "pool_timeout": DB_POOL_TIMEOUT,
+    }
+    DB_TRANSACTION_RETRIES = DB_TRANSACTION_RETRIES
+    SOCKETIO_CORS_ALLOWED_ORIGINS = SOCKETIO_CORS_ALLOWED_ORIGINS
+    SOCKETIO_PING_TIMEOUT = SOCKETIO_PING_TIMEOUT
+    SOCKETIO_PING_INTERVAL = SOCKETIO_PING_INTERVAL
+    APP_HOST = APP_HOST
+    APP_PORT = APP_PORT
+    DEBUG = DEBUG
+    INVENTORY_LOW_STOCK_THRESHOLD = INVENTORY_LOW_STOCK_THRESHOLD
+    PUBLIC_BASE_URL = PUBLIC_BASE_URL.rstrip("/")
+
+
+def get_config():
+    return Config

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="glass-card">
+    <div class="header-section">
+        <h2>Server error</h2>
+        <p>Something went wrong while processing this request.</p>
+    </div>
+    <a href="{{ url_for('web.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header-section">
+    <h2>Welcome to Fabrix</h2>
+    <p>Live sales, stock, and profit metrics for every connected device.</p>
+</div>
+
+<div class="dashboard-grid">
+    <div class="glass-card stat-card">
+        <h3>Total Products</h3>
+        <p id="totalProducts">{{ stats.total_products }}</p>
+        <div class="card-foot">
+            <a href="{{ url_for('web.inventory_page') }}" class="btn btn-primary btn-small">View Inventory</a>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card">
+        <h3>Total Stock Items</h3>
+        <p id="totalStock">{{ stats.total_stock }}</p>
+        <div class="card-foot muted">
+            <i class="ph-fill ph-packages"></i> Across all products
+        </div>
+    </div>
+
+    <div class="glass-card stat-card">
+        <h3>Today's Sales</h3>
+        <p id="todaySales">Rs {{ "%.2f"|format(stats.today_sales) }}</p>
+        <div class="card-foot">
+            <a href="{{ url_for('web.billing') }}" class="btn btn-primary btn-small">New Bill</a>
+        </div>
+    </div>
+
+    <div class="glass-card stat-card success-card">
+        <h3>Today's Profit</h3>
+        <p id="todayProfit">Rs {{ "%.2f"|format(stats.today_profit) }}</p>
+        <div class="card-foot muted">
+            <i class="ph-fill ph-trend-up"></i> Net profit today
+        </div>
+    </div>
+</div>
+
+<div class="glass-card quick-actions">
+    <div>
+        <h3>Quick Actions</h3>
+        <p class="muted">The dashboard refreshes instantly whenever stock or billing changes from mobile, desktop, or browser.</p>
+    </div>
+    <div class="action-row">
+        <a href="{{ url_for('web.inventory_page') }}" class="btn btn-secondary">
+            <i class="ph ph-plus"></i> Add Product
+        </a>
+        <a href="{{ url_for('web.billing') }}" class="btn btn-primary">
+            <i class="ph ph-receipt"></i> Generate Bill
+        </a>
+        <a href="{{ url_for('web.reports') }}" class="btn btn-secondary">
+            <i class="ph ph-chart-line-up"></i> View Reports
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fabrix Shop Manager</title>
+    <meta name="theme-color" content="#b58c52">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Fabrix">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="{{ url_for('web.web_manifest') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='pwa/icons/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='pwa/icons/icon-32.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" crossorigin="anonymous"></script>
+    {% block head %}{% endblock %}
+</head>
+<body data-public-base-url="{{ config.get('PUBLIC_BASE_URL', '') }}">
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="ph-fill ph-storefront"></i>
+                <h1>Fabrix</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="{{ url_for('web.dashboard') }}" class="{{ 'active' if request.endpoint == 'web.dashboard' else '' }}">
+                    <i class="ph ph-squares-four"></i> Dashboard
+                </a>
+                <a href="{{ url_for('web.inventory_page') }}" class="{{ 'active' if request.endpoint == 'web.inventory_page' else '' }}">
+                    <i class="ph ph-package"></i> Inventory
+                </a>
+                <a href="{{ url_for('web.billing') }}" class="{{ 'active' if request.endpoint == 'web.billing' else '' }}">
+                    <i class="ph ph-receipt"></i> Billing POS
+                </a>
+                <a href="{{ url_for('web.reports') }}" class="{{ 'active' if request.endpoint in ['web.reports', 'web.reports_by_period'] else '' }}">
+                    <i class="ph ph-chart-line-up"></i> Reports
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <p>Connected to centralized MySQL backend</p>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <button id="installAppButton" class="btn btn-secondary install-app-button hidden" type="button">
+                    <i class="ph ph-download-simple"></i> Install App
+                </button>
+                <div class="sync-status" id="syncStatus">
+                    <span class="status-dot offline"></span>
+                    <span id="syncStatusLabel">Connecting...</span>
+                </div>
+                <div class="user-info">
+                    <div class="avatar"><i class="ph-fill ph-user"></i></div>
+                    <span>Admin</span>
+                </div>
+            </header>
+
+            <div class="content">
+                <div id="toastContainer" class="toast-container"></div>
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
