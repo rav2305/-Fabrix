@@ -44,8 +44,31 @@ def _build_database_uri() -> str:
 
 class Config:
     SECRET_KEY = SECRET_KEY
+
     SQLALCHEMY_DATABASE_URI = _build_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        "pool_pre_ping": True,
+        "pool_recycle": DB_POOL_RECYCLE,
+        "pool_size": DB_POOL_SIZE,
+        "max_overflow": DB_MAX_OVERFLOW,
+        "pool_timeout": DB_POOL_TIMEOUT,
+    }
+
+    DB_TRANSACTION_RETRIES = DB_TRANSACTION_RETRIES
+
+    SOCKETIO_CORS_ALLOWED_ORIGINS = SOCKETIO_CORS_ALLOWED_ORIGINS
+    SOCKETIO_PING_TIMEOUT = SOCKETIO_PING_TIMEOUT
+    SOCKETIO_PING_INTERVAL = SOCKETIO_PING_INTERVAL
+
+    APP_HOST = APP_HOST
+    APP_PORT = APP_PORT
+    DEBUG = DEBUG
+
+    INVENTORY_LOW_STOCK_THRESHOLD = INVENTORY_LOW_STOCK_THRESHOLD
+
+    PUBLIC_BASE_URL = PUBLIC_BASE_URL.rstrip("/")
 
 
 def get_config():
