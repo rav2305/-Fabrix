@@ -1,13 +1,15 @@
+import os
 from urllib.parse import quote_plus
 
-# Centralized in-code settings.
-# Edit these values directly when moving the project to a different machine/server.
-SECRET_KEY = "replace-with-a-secure-random-secret"
-DB_USERNAME = "root"
-DB_PASSWORD = ""
-DB_HOST = "localhost"
-DB_PORT = 3306
-DB_NAME = "fabrix_shop_manager"
+# Get database config from environment variables (Railway) or use defaults
+DB_USERNAME = os.getenv("MYSQLUSER", "root")
+DB_PASSWORD = os.getenv("MYSQLPASSWORD", "")
+DB_HOST = os.getenv("MYSQLHOST", "localhost")
+DB_PORT = os.getenv("MYSQLPORT", "3306")
+DB_NAME = os.getenv("MYSQLDATABASE", "fabrix_shop_manager")
+
+# Centralized in-code settings
+SECRET_KEY = os.getenv("SECRET_KEY", "replace-with-a-secure-random-secret")
 DB_POOL_RECYCLE = 1800
 DB_POOL_SIZE = 10
 DB_MAX_OVERFLOW = 20
@@ -17,10 +19,10 @@ SOCKETIO_CORS_ALLOWED_ORIGINS = "*"
 SOCKETIO_PING_TIMEOUT = 20
 SOCKETIO_PING_INTERVAL = 25
 APP_HOST = "0.0.0.0"
-APP_PORT = 5000
+APP_PORT = int(os.getenv("PORT", 5000))
 DEBUG = False
 INVENTORY_LOW_STOCK_THRESHOLD = 10
-PUBLIC_BASE_URL = "http://127.0.0.1:5000"
+PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "http://127.0.0.1:5000")
 
 
 def _build_database_uri() -> str:
