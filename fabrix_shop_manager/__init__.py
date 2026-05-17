@@ -8,6 +8,7 @@ from .config import get_config
 from .extensions import init_extensions
 from .sockets.events import register_socket_handlers
 from .utils.exceptions import AppError
+from .db_schema import init_schema
 
 
 def create_app(config_object=None):
@@ -20,6 +21,14 @@ def create_app(config_object=None):
     app.config.from_object(config_object or get_config())
 
     init_extensions(app)
+    
+    # Initialize database schema
+    with app.app_context():
+        try:
+            init_schema()
+        except Exception as e:
+            print(f"Warning: Could not initialize schema: {e}")
+    
     register_blueprints(app)
     register_error_handlers(app)
     register_socket_handlers()
