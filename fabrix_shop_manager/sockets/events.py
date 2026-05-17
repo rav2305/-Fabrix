@@ -8,23 +8,45 @@ from ..services.dashboard_service import get_dashboard_stats
 
 def register_socket_handlers():
     @socketio.on("connect")
-    def handle_connect():
+    def handle_connect(auth=None):
+        try:
+            stats = get_dashboard_stats()
+        except Exception as e:
+            print(f"Warning: Could not fetch dashboard stats: {e}")
+            stats = {
+                "total_products": 0,
+                "total_invoices": 0,
+                "total_sales": 0,
+                "total_profit": 0,
+            }
+        
         emit(
             "socket:connected",
             {
                 "success": True,
                 "server_time": datetime.utcnow().isoformat(),
-                "stats": get_dashboard_stats(),
+                "stats": stats,
             },
         )
 
     @socketio.on("dashboard:request")
     def handle_dashboard_request():
+        try:
+            stats = get_dashboard_stats()
+        except Exception as e:
+            print(f"Warning: Could not fetch dashboard stats: {e}")
+            stats = {
+                "total_products": 0,
+                "total_invoices": 0,
+                "total_sales": 0,
+                "total_profit": 0,
+            }
+        
         emit(
             "dashboard:refresh",
             {
                 "reason": "client_requested",
-                "stats": get_dashboard_stats(),
+                "stats": stats,
                 "occurred_at": datetime.utcnow().isoformat(),
             },
         )
