@@ -10,7 +10,12 @@ socketio = SocketIO(async_mode="threading")
 
 def init_extensions(app):
     db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+
     migrate.init_app(app, db, directory="migrations")
+
     socketio.init_app(
         app,
         cors_allowed_origins=app.config["SOCKETIO_CORS_ALLOWED_ORIGINS"],
