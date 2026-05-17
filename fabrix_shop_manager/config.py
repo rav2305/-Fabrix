@@ -4,7 +4,7 @@ from urllib.parse import quote_plus
 # Edit these values directly when moving the project to a different machine/server.
 SECRET_KEY = "replace-with-a-secure-random-secret"
 DB_USERNAME = "avnadmin"
-DB_PASSWORD = ""
+DB_PASSWORD = "AVNS_FY78I7chi76R7LMzapV"
 DB_HOST = "mysql-17a21227-ashirav23-5f09.j.aivencloud.com"
 DB_PORT = 24942
 DB_NAME = "defaultdb"
